@@ -1,6 +1,6 @@
 # MyMovieList
 
-This is a react application that leverages the TMDB APIs
+This is a react application that leverages the [TMDB API](https://developers.themoviedb.org/3)
 
 ## Available Scripts
 

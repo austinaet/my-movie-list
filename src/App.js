@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { GeistProvider, CssBaseline } from '@geist-ui/react';
+import { GeistProvider, CssBaseline, Loading } from '@geist-ui/react';
 import { JssProvider } from 'react-jss';
 
 import Layout from './components/Layout/Layout';
-import LandingPage from './pages/Landing';
-import ShowPage from './pages/Show';
-import CastPage from './pages/Cast';
-import ReviewsPage from './pages/Reviews';
-import SeasonsPage from './pages/Seasons';
-import EpisodesPage from './pages/Episodes';
-import PersonPage from './pages/Person';
-import Today from './pages/Today';
 import ErrorPage from './components/util/Error';
+import LandingPage from './pages/Landing';
+
+const ShowPage = React.lazy(() => import('./pages/Show'));
+const CastPage = React.lazy(() => import('./pages/Cast'));
+const ReviewsPage = React.lazy(() => import('./pages/Reviews'));
+const SeasonsPage = React.lazy(() => import('./pages/Seasons'));
+const EpisodesPage = React.lazy(() => import('./pages/Episodes'));
+const PersonPage = React.lazy(() => import('./pages/Person'));
+const Today = React.lazy(() => import('./pages/Today'));
 
 const getDefaultTheme = () =>
     window.matchMedia &&
@@ -21,7 +22,7 @@ const getDefaultTheme = () =>
         : 'light';
 
 function App() {
-    const [themeType, setThemeType] = useState(getDefaultTheme());
+    const [themeType, setThemeType] = React.useState(getDefaultTheme());
     const toggleTheme = () =>
         setThemeType((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
 
@@ -38,104 +39,106 @@ function App() {
             <GeistProvider theme={{ type: themeType }}>
                 <CssBaseline />
                 <Router>
-                    <Layout toggleTheme={toggleTheme}>
-                        <Switch>
-                            <Route path="/" exact component={LandingPage} />
-                            <Route
-                                key="/movie/now_playing"
-                                path="/today/movie/now_playing"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/movie/popular"
-                                path="/today/movie/popular"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/movie/top_rated"
-                                path="/today/movie/top_rated"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/movie/upcoming"
-                                path="/today/movie/upcoming"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/tv/airing_today"
-                                path="/today/tv/airing_today"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/tv/on_the_air"
-                                path="/today/tv/on_the_air"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/tv/popular"
-                                path="/today/tv/popular"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/tv/top_rated"
-                                path="/today/tv/top_rated"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                key="/person/popular"
-                                path="/today/person/popular"
-                                exact
-                                component={Today}
-                            />
-                            <Route
-                                path="/person/:id"
-                                exact
-                                component={PersonPage}
-                            />
-                            <Route
-                                path="/:type/:id"
-                                exact
-                                component={ShowPage}
-                            />
-                            <Route
-                                path="/:type/:id/cast"
-                                exact
-                                component={CastPage}
-                            />
-                            <Route
-                                path="/:type/:id/reviews"
-                                exact
-                                component={ReviewsPage}
-                            />
-                            <Route
-                                path="/tv/:id/seasons"
-                                exact
-                                component={SeasonsPage}
-                            />
-                            <Route
-                                path="/tv/:id/season/:num"
-                                exact
-                                component={EpisodesPage}
-                            />
-                            <Route path="/">
-                                <ErrorPage
-                                    error={{
-                                        code: 404,
-                                        message: 'Page not found',
-                                    }}
-                                    setTitle
+                    <React.Suspense fallback={<Loading />}>
+                        <Layout toggleTheme={toggleTheme}>
+                            <Switch>
+                                <Route path="/" exact component={LandingPage} />
+                                <Route
+                                    key="/movie/now_playing"
+                                    path="/today/movie/now_playing"
+                                    exact
+                                    component={Today}
                                 />
-                            </Route>
-                        </Switch>
-                    </Layout>
+                                <Route
+                                    key="/movie/popular"
+                                    path="/today/movie/popular"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/movie/top_rated"
+                                    path="/today/movie/top_rated"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/movie/upcoming"
+                                    path="/today/movie/upcoming"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/tv/airing_today"
+                                    path="/today/tv/airing_today"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/tv/on_the_air"
+                                    path="/today/tv/on_the_air"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/tv/popular"
+                                    path="/today/tv/popular"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/tv/top_rated"
+                                    path="/today/tv/top_rated"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    key="/person/popular"
+                                    path="/today/person/popular"
+                                    exact
+                                    component={Today}
+                                />
+                                <Route
+                                    path="/person/:id"
+                                    exact
+                                    component={PersonPage}
+                                />
+                                <Route
+                                    path="/:type/:id"
+                                    exact
+                                    component={ShowPage}
+                                />
+                                <Route
+                                    path="/:type/:id/cast"
+                                    exact
+                                    component={CastPage}
+                                />
+                                <Route
+                                    path="/:type/:id/reviews"
+                                    exact
+                                    component={ReviewsPage}
+                                />
+                                <Route
+                                    path="/tv/:id/seasons"
+                                    exact
+                                    component={SeasonsPage}
+                                />
+                                <Route
+                                    path="/tv/:id/season/:num"
+                                    exact
+                                    component={EpisodesPage}
+                                />
+                                <Route path="/">
+                                    <ErrorPage
+                                        error={{
+                                            code: 404,
+                                            message: 'Page not found',
+                                        }}
+                                        setTitle
+                                    />
+                                </Route>
+                            </Switch>
+                        </Layout>
+                    </React.Suspense>
                 </Router>
             </GeistProvider>
         </JssProvider>
