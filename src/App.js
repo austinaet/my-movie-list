@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { GeistProvider, CssBaseline, Loading } from '@geist-ui/react';
+import { GeistProvider, CssBaseline } from '@geist-ui/react';
 import { JssProvider } from 'react-jss';
 
 import Layout from './components/Layout/Layout';
 import ErrorPage from './components/util/Error';
+import LoadingPage from './components/util/Loading';
 import LandingPage from './pages/Landing';
 
 const ShowPage = React.lazy(() => import('./pages/Show'));
@@ -15,31 +16,35 @@ const EpisodesPage = React.lazy(() => import('./pages/Episodes'));
 const PersonPage = React.lazy(() => import('./pages/Person'));
 const Today = React.lazy(() => import('./pages/Today'));
 
-const getDefaultTheme = () =>
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+const getTheme = () => {
+    const theme = localStorage.getItem('mmlTheme');
+    if (theme) {
+        return theme;
+    }
+    const newTheme =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+    localStorage.setItem('mmlTheme', newTheme);
+    return newTheme;
+};
 
 function App() {
-    const [themeType, setThemeType] = React.useState(getDefaultTheme());
-    const toggleTheme = () =>
-        setThemeType((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+    const [themeType, setThemeType] = React.useState(getTheme());
 
-    if (window.matchMedia) {
-        const colorSchemeQuery = window.matchMedia(
-            '(prefers-color-scheme: dark)'
-        );
-        colorSchemeQuery.onchange = (e) =>
-            setThemeType(e.matches ? 'dark' : 'light');
-    }
+    const toggleTheme = () => {
+        const newTheme = themeType === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('mmlTheme', newTheme);
+        setThemeType(newTheme);
+    };
 
     return (
         <JssProvider id={{ minify: true }}>
             <GeistProvider theme={{ type: themeType }}>
                 <CssBaseline />
                 <Router>
-                    <React.Suspense fallback={<Loading />}>
+                    <React.Suspense fallback={<LoadingPage text="Loading..." />}>
                         <Layout toggleTheme={toggleTheme}>
                             <Switch>
                                 <Route path="/" exact component={LandingPage} />

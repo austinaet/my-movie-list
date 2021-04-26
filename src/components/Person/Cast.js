@@ -15,7 +15,10 @@ const useStyles = makeStyles((ui) => ({
         color: ui.palette.success,
         transition: 'color 0.2s',
         '&:hover': {
-            color: ui.type === 'dark' ? ui.palette.successLight : ui.palette.successDark,
+            color:
+                ui.type === 'dark'
+                    ? ui.palette.successLight
+                    : ui.palette.successDark,
         },
     },
 }));
@@ -35,7 +38,7 @@ const transformCast = (cast) => {
                     ? act.release_date
                     : act.first_air_date
             ),
-            character: act.character || 'Self',
+            character: act.character,
             mediaType: act.media_type,
         };
         if (act.media_type === 'tv') {
@@ -80,19 +83,30 @@ const Cast = ({ cast }) => {
                             <Text className={classes.paragraph}>
                                 <span>{act.releaseYear || '--------'}</span>
                                 <Spacer x={0.8} inline />
-                                <Link to={`/${act.mediaType}/${act.id}`} className={classes.link}>
+                                <Link
+                                    to={`/${act.mediaType}/${act.id}`}
+                                    className={classes.link}
+                                >
                                     {act.title}
-                                </Link>{' '}
-                                {act.mediaType === 'tv' && (
-                                    <span className={classes.secondaryText}>
-                                        ({act.episodes} episode
-                                        {act.episodes > 1 && 's'}){' '}
-                                    </span>
+                                </Link>
+                                {act.mediaType === 'tv' && act.episodes && (
+                                    <>
+                                        {' '}
+                                        <span className={classes.secondaryText}>
+                                            ({act.episodes} episode
+                                            {act.episodes > 1 && 's'}){' '}
+                                        </span>
+                                    </>
                                 )}
-                                <span className={classes.secondaryText}>
-                                    as
-                                </span>{' '}
-                                <span>{act.character}</span>
+                                {act.character && (
+                                    <>
+                                        {' '}
+                                        <span className={classes.secondaryText}>
+                                            as
+                                        </span>{' '}
+                                        <span>{act.character}</span>
+                                    </>
+                                )}
                             </Text>
                         </div>
                     );

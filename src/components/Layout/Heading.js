@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Popover, useTheme, Spacer } from '@geist-ui/react';
+import { Button, Popover, useTheme } from '@geist-ui/react';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, Search as SearchIcon } from 'react-feather';
 
@@ -11,7 +11,7 @@ import Search from './Search';
 const useStyles = makeStyles((ui) => ({
     header: {
         width: '100%',
-        margin: '0 auto',
+        margin: '0',
         backgroundColor: ui.palette.background,
         fontSize: 16,
         height: 60,
@@ -48,11 +48,11 @@ const useStyles = makeStyles((ui) => ({
         display: 'flex !important',
         justifyContent: 'center !important',
         alignItems: 'center !important',
-        marginRight: 5,
         padding: '0 !important',
     },
     popover: {
         fontSize: '0.9rem',
+        marginLeft: '4px',
         '&:hover': {
             cursor: 'pointer !important',
         },
@@ -64,6 +64,17 @@ const useStyles = makeStyles((ui) => ({
             color: ui.palette.accents_6,
         },
     },
+    '@media screen and (min-width: 400px)': {
+        icon: {
+            marginRight: 5
+        },
+        header: {
+            margin: '0 auto'
+        },
+        popover: {
+            marginLeft: '16px'
+        }
+    }
 }));
 
 const MoviePopover = ({ className }) => (
@@ -147,7 +158,6 @@ const Menu = ({ toggleTheme }) => {
                             MyMovieList
                         </Link>
                     </div>
-                    <Spacer inline x={0.5} />
                     <Popover
                         content={() => (
                             <MoviePopover className={classes.link} />
@@ -157,7 +167,6 @@ const Menu = ({ toggleTheme }) => {
                     >
                         <span className={classes.popover}>Movies</span>
                     </Popover>
-                    <Spacer inline x={0.5} />
                     <Popover
                         content={() => <TVPopover className={classes.link} />}
                         hideArrow
@@ -165,7 +174,6 @@ const Menu = ({ toggleTheme }) => {
                     >
                         <span className={classes.popover}>TV Shows</span>
                     </Popover>
-                    <Spacer inline x={0.5} />
                     <Popover
                         content={() => (
                             <PeoplePopover className={classes.link} />

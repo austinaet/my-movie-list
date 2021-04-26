@@ -15,7 +15,10 @@ const useStyles = makeStyles((ui) => ({
         color: ui.palette.success,
         transition: 'color 0.2s',
         '&:hover': {
-            color: ui.type === 'dark' ? ui.palette.successLight : ui.palette.successDark,
+            color:
+                ui.type === 'dark'
+                    ? ui.palette.successLight
+                    : ui.palette.successDark,
         },
     },
 }));
@@ -82,19 +85,30 @@ const Department = ({ name, roles }) => {
                             <Text className={classes.paragraph}>
                                 <span>{role.releaseYear || '--------'}</span>
                                 <Spacer x={0.8} inline />
-                                <Link to={`/${role.mediaType}/${role.id}`} className={classes.link}>
+                                <Link
+                                    to={`/${role.mediaType}/${role.id}`}
+                                    className={classes.link}
+                                >
                                     {role.title}
-                                </Link>{' '}
+                                </Link>
                                 {role.mediaType === 'tv' && role.episodes && (
-                                    <span className={classes.secondaryText}>
-                                        ({role.episodes} episode
-                                        {role.episodes > 1 && 's'}){' '}
-                                    </span>
-                                )}{' '}
-                                <span className={classes.secondaryText}>
-                                    as
-                                </span>{' '}
-                                <span>{role.job}</span>
+                                    <>
+                                        {' '}
+                                        <span className={classes.secondaryText}>
+                                            ({role.episodes} episode
+                                            {role.episodes > 1 && 's'}){' '}
+                                        </span>
+                                    </>
+                                )}
+                                {role.job && (
+                                    <>
+                                        {' '}
+                                        <span className={classes.secondaryText}>
+                                            as
+                                        </span>{' '}
+                                        <span>{role.job}</span>
+                                    </>
+                                )}
                             </Text>
                         </div>
                     );
