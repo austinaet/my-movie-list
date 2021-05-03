@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Collapse } from '@geist-ui/react';
+import { Collapse, Button } from '@geist-ui/react';
 import { Link } from 'react-router-dom';
+import { X } from 'react-feather';
 
 import makeStyles from '../../util/makeStyles';
 import navLinks from './navLinks';
@@ -27,7 +28,12 @@ const useStyles = makeStyles((ui) => ({
         padding: '0.5rem',
         width: '100%',
         fontWeight: 'bold',
-        fontSize: '1.5rem'
+        fontSize: '1.5rem',
+    },
+    iconContainer: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        paddingTop: '1.25rem'
     },
     '@media screen and (min-width: 480px)': {
         container: {
@@ -50,6 +56,16 @@ const Sidenav = ({ show, close }) => {
 
     return ReactDOM.createPortal(
         <div className={classes.container} style={{ transform }}>
+            <div className={classes.iconContainer}>
+                <Button
+                    aria-label="Close side nav"
+                    type="abort"
+                    auto
+                    onClick={close}
+                >
+                    <X size={24} />
+                </Button>
+            </div>
             <Collapse.Group>
                 {Object.keys(navLinks).map((heading) => (
                     <Collapse title={heading} key={heading}>
