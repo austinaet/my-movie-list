@@ -4,6 +4,7 @@ import { Spacer, Text } from '@geist-ui/react';
 
 import errorHandler from '../util/errorHandler';
 import { caller, query } from '../util/axios';
+import makeStyles from '../util/makeStyles';
 
 import Loading from '../components/util/Loading';
 import ErrorPage from '../components/util/Error';
@@ -11,8 +12,15 @@ import Content from '../components/util/Content';
 import { MiniBanner } from '../components/Shows/Banner';
 import Episode from '../components/Shows/SOE';
 
+const useStyles = makeStyles((ui) => ({
+    center: {
+        textAlign: 'center',
+    },
+}));
+
 const Season = (props) => {
     const { id, num } = useParams();
+    const classes = useStyles();
 
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState();
@@ -79,7 +87,7 @@ const Season = (props) => {
                                 ))}
                             </>
                         ) : (
-                            <Text h3>
+                            <Text h3 className={classes.center}>
                                 No episodes available for this season
                             </Text>
                         )}

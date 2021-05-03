@@ -89,7 +89,7 @@ const Cast = ({ cast }) => {
                                 >
                                     {act.title}
                                 </Link>
-                                {act.mediaType === 'tv' && act.episodes && (
+                                {act.mediaType === 'tv' && act.episodes > 0 && (
                                     <>
                                         {' '}
                                         <span className={classes.secondaryText}>

@@ -1,12 +1,20 @@
 import React from 'react';
 import { Button, Popover, useTheme } from '@geist-ui/react';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, Search as SearchIcon } from 'react-feather';
+import {
+    Sun,
+    Moon,
+    Search as SearchIcon,
+    Menu as MenuIcon,
+} from 'react-feather';
 
 import makeStyles from '../../util/makeStyles';
+import navLinks from './navLinks';
 
 import Content from '../util/Content';
 import Search from './Search';
+import Backdrop from '../util/Backdrop';
+import Sidenav from './Sidenav';
 
 const useStyles = makeStyles((ui) => ({
     header: {
@@ -51,11 +59,17 @@ const useStyles = makeStyles((ui) => ({
         padding: '0 !important',
     },
     popover: {
+        display: 'none !important',
+    },
+    popoverText: {
         fontSize: '0.9rem',
         marginLeft: '4px',
         '&:hover': {
             cursor: 'pointer !important',
         },
+    },
+    menuIcon: {
+        display: 'inline',
     },
     link: {
         color: ui.palette.foreground,
@@ -64,149 +78,171 @@ const useStyles = makeStyles((ui) => ({
             color: ui.palette.accents_6,
         },
     },
-    '@media screen and (min-width: 400px)': {
+    '@media screen and (min-width: 480px)': {
         icon: {
-            marginRight: 5
+            marginRight: 5,
         },
         header: {
-            margin: '0 auto'
+            margin: '0 auto',
         },
         popover: {
-            marginLeft: '16px'
-        }
-    }
+            display: 'block !important',
+        },
+        popoverText: {
+            marginLeft: '16px',
+        },
+        menuIcon: {
+            display: 'none !important',
+        },
+    },
 }));
 
-const MoviePopover = ({ className }) => (
-    <>
-        <Popover.Item>
-            <Link to="/today/movie/now_playing" className={className}>
-                Now Playing
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/movie/popular" className={className}>
-                Popular
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/movie/top_rated" className={className}>
-                Top Rated
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/movie/upcoming" className={className}>
-                Upcoming
-            </Link>
-        </Popover.Item>
-    </>
-);
+const MoviePopover = ({ className }) => {
+    const movieLinks = navLinks.Movies;
+    return (
+        <>
+            {Object.keys(movieLinks).map((type) => (
+                <Popover.Item key={movieLinks[type]}>
+                    <Link to={movieLinks[type]} className={className}>
+                        {type}
+                    </Link>
+                </Popover.Item>
+            ))}
+        </>
+    );
+};
 
-const TVPopover = ({ className }) => (
-    <>
-        <Popover.Item>
-            <Link to="/today/tv/airing_today" className={className}>
-                Airing Today
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/tv/on_the_air" className={className}>
-                On The Air
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/tv/popular" className={className}>
-                Popular
-            </Link>
-        </Popover.Item>
-        <Popover.Item>
-            <Link to="/today/tv/top_rated" className={className}>
-                Top Rated
-            </Link>
-        </Popover.Item>
-    </>
-);
+const TVPopover = ({ className }) => {
+    const tvLinks = navLinks['TV Shows'];
+    return (
+        <>
+            {Object.keys(tvLinks).map((type) => (
+                <Popover.Item key={tvLinks[type]}>
+                    <Link to={tvLinks[type]} className={className}>
+                        {type}
+                    </Link>
+                </Popover.Item>
+            ))}
+        </>
+    );
+};
 
-const PeoplePopover = ({ className }) => (
-    <Popover.Item>
-        <Link to="/today/person/popular" className={className}>
-            Popular
-        </Link>
-    </Popover.Item>
-);
+const PeoplePopover = ({ className }) => {
+    const peopleLinks = navLinks.People;
+    return (
+        <>
+            {Object.keys(peopleLinks).map((type) => (
+                <Popover.Item key={peopleLinks[type]}>
+                    <Link to={peopleLinks[type]} className={className}>
+                        {type}
+                    </Link>
+                </Popover.Item>
+            ))}
+        </>
+    );
+};
 
 const Menu = ({ toggleTheme }) => {
     const classes = useStyles();
     const theme = useTheme();
     const [search, setSearch] = React.useState(false);
+    const [showSideNav, setShowSideNav] = React.useState(false);
     const isDark = theme.type === 'dark';
 
     const showSearch = () => {
         setSearch(true);
-    }
+    };
 
     const hideSearch = () => {
         setSearch(false);
-    }
+    };
+
+    const showSideNavHandler = () => {
+        setShowSideNav(true);
+    };
+
+    const hideSideNavHandler = () => {
+        setShowSideNav(false);
+    };
 
     return (
-        <div className={`${classes.header} ${classes.headerFixed}`}>
-            <Content className={classes.headerContent}>
-                <div style={{ display: 'flex' }}>
-                    <div className={classes.headerTitle}>
-                        <Link to="/" className={classes.title}>
-                            MyMovieList
-                        </Link>
+        <>
+            <Backdrop show={showSideNav} onClick={hideSideNavHandler} />
+            <Sidenav show={showSideNav} close={hideSideNavHandler} />
+            <div className={`${classes.header} ${classes.headerFixed}`}>
+                <Content className={classes.headerContent}>
+                    <Button
+                        aria-label="Menu"
+                        className={`${classes.icon} ${classes.menuIcon}`}
+                        auto
+                        type="abort"
+                        onClick={showSideNavHandler}
+                    >
+                        <MenuIcon size={16} />
+                    </Button>
+                    <div style={{ display: 'flex' }}>
+                        <div className={classes.headerTitle}>
+                            <Link to="/" className={classes.title}>
+                                MyMovieList
+                            </Link>
+                        </div>
+                        <Popover
+                            content={() => (
+                                <MoviePopover className={classes.link} />
+                            )}
+                            hideArrow
+                            trigger="hover"
+                            className={classes.popover}
+                        >
+                            <span className={classes.popoverText}>Movies</span>
+                        </Popover>
+                        <Popover
+                            content={() => (
+                                <TVPopover className={classes.link} />
+                            )}
+                            hideArrow
+                            trigger="hover"
+                            className={classes.popover}
+                        >
+                            <span className={classes.popoverText}>
+                                TV Shows
+                            </span>
+                        </Popover>
+                        <Popover
+                            content={() => (
+                                <PeoplePopover className={classes.link} />
+                            )}
+                            hideArrow
+                            trigger="hover"
+                            className={classes.popover}
+                        >
+                            <span className={classes.popoverText}>People</span>
+                        </Popover>
                     </div>
-                    <Popover
-                        content={() => (
-                            <MoviePopover className={classes.link} />
-                        )}
-                        hideArrow
-                        trigger="hover"
-                    >
-                        <span className={classes.popover}>Movies</span>
-                    </Popover>
-                    <Popover
-                        content={() => <TVPopover className={classes.link} />}
-                        hideArrow
-                        trigger="hover"
-                    >
-                        <span className={classes.popover}>TV Shows</span>
-                    </Popover>
-                    <Popover
-                        content={() => (
-                            <PeoplePopover className={classes.link} />
-                        )}
-                        hideArrow
-                        trigger="hover"
-                    >
-                        <span className={classes.popover}>People</span>
-                    </Popover>
-                </div>
-                <div className={classes.sidebar}>
-                    <Button
-                        aria-label="Search"
-                        className={classes.icon}
-                        auto
-                        type="abort"
-                        onClick={showSearch}
-                    >
-                        <SearchIcon size={16} />
-                        <Search isVisible={search} hide={hideSearch} />
-                    </Button>
-                    <Button
-                        aria-label="Toggle Theme"
-                        className={classes.icon}
-                        auto
-                        type="abort"
-                        onClick={toggleTheme}
-                    >
-                        {isDark ? <Sun size={16} /> : <Moon size={16} />}
-                    </Button>
-                </div>
-            </Content>
-        </div>
+                    <div className={classes.sidebar}>
+                        <Button
+                            aria-label="Search"
+                            className={classes.icon}
+                            auto
+                            type="abort"
+                            onClick={showSearch}
+                        >
+                            <SearchIcon size={16} />
+                            <Search isVisible={search} hide={hideSearch} />
+                        </Button>
+                        <Button
+                            aria-label="Toggle Theme"
+                            className={classes.icon}
+                            auto
+                            type="abort"
+                            onClick={toggleTheme}
+                        >
+                            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                        </Button>
+                    </div>
+                </Content>
+            </div>
+        </>
     );
 };
 

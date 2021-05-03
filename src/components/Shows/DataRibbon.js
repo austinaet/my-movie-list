@@ -36,9 +36,7 @@ const Ribbon = ({ rating, releaseDate, genres, runtime }) => {
                 </>
             )}
             {rating > 0 &&
-                (modifiedReleaseDate ||
-                    displayGenres ||
-                    (runtime && runtime > 0)) && (
+                (modifiedReleaseDate || displayGenres || runtime > 0) && (
                     <Dot className={classes.dot} />
                 )}
             {modifiedReleaseDate && (
@@ -46,19 +44,16 @@ const Ribbon = ({ rating, releaseDate, genres, runtime }) => {
                     <Text span>{modifiedReleaseDate}</Text>
                 </>
             )}
-            {modifiedReleaseDate &&
-                (displayGenres || (runtime && runtime > 0)) && (
-                    <Dot className={classes.dot} />
-                )}
+            {modifiedReleaseDate && (displayGenres || runtime > 0) && (
+                <Dot className={classes.dot} />
+            )}
             {displayGenres && (
                 <>
                     <Text span>{displayGenres}</Text>
                 </>
             )}
-            {displayGenres && runtime && runtime > 0 && (
-                <Dot className={classes.dot} />
-            )}
-            {runtime && runtime > 0 && (
+            {displayGenres && runtime > 0 && <Dot className={classes.dot} />}
+            {runtime > 0 && (
                 <>
                     <Text span>
                         {hours ? hours + 'h ' : ''}
