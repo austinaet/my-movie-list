@@ -6,6 +6,8 @@ name: Deploy to Firebase Hosting on PR
 jobs:
   build_and_preview:
     runs-on: ubuntu-latest
+    env:
+      REACT_APP_TMDB_API_KEY: '${{ secrets.TMDB_API_KEY }}'
     steps:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
