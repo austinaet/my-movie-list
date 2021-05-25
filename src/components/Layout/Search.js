@@ -62,9 +62,9 @@ const Search = ({ isVisible, hide }) => {
                     const results = data.results.map(
                         ({
                             media_type: mediaType,
-                            title = undefined,
-                            name = undefined,
-                            id = undefined,
+                            title = '',
+                            name = '',
+                            id = 0,
                         }) =>
                             mediaType === 'movie'
                                 ? makeOptions('movie', title, id)

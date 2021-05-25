@@ -38,7 +38,6 @@ const Biography = ({ biography }) => {
                 setIsBioExpanded(true);
             }
         }
-
     }, [biography]);
 
     const showMoreHandler = () => {
@@ -54,7 +53,7 @@ const Biography = ({ biography }) => {
     return (
         <>
             <Text h3>Biography</Text>
-            <Text p className={classes.biography}>
+            <Text p className={classes.biography} data-testid="biography">
                 {bio}
             </Text>
             {!isShortBio && (
@@ -65,6 +64,7 @@ const Biography = ({ biography }) => {
                         ghost
                         onClick={showMoreHandler}
                         className={classes.button}
+                        data-testid="expandBioButton"
                     >
                         {isBioExpanded ? 'Show Less' : 'Show More'}
                     </Button>

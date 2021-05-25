@@ -6,6 +6,9 @@ import makeStyles from '../../util/makeStyles';
 
 import Content from '../util/Content';
 
+import TMDBLogo from '../../assets/TMDBLogo.svg';
+import GeistLogo from '../../assets/geist.png';
+
 const useStyles = makeStyles((ui) => ({
     footerBorder: {
         borderTop: `solid 1px ${ui.palette.accents_2}`,
@@ -34,22 +37,17 @@ const useStyles = makeStyles((ui) => ({
     icon: {
         margin: '0 8px',
     },
-    // [`@media screen and (min-width: ${ui.layout.pageWidthWithMargin})`]: {
-    //     footer: {
-    //         textAlign: 'start !important',
-    //     },
-    // },
 }));
 
 const Footer = (props) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.footerBorder}>
+        <div className={classes.footerBorder} data-testid="footer">
             <Content>
                 <div className={classes.content}>
                     <img
-                        src="/TMDBLogo.svg"
+                        src={TMDBLogo}
                         alt="TMDb Logo"
                         className={classes.image}
                     />
@@ -78,7 +76,7 @@ const Footer = (props) => {
                     <div className={classes.container}>
                         <Image
                             className={classes.logo}
-                            src="/geist.png"
+                            src={GeistLogo}
                             width={32}
                             height={32}
                             alt="Geist"

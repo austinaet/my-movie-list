@@ -166,83 +166,81 @@ const Menu = ({ toggleTheme }) => {
     };
 
     return (
-        <>
+        <div
+            className={`${classes.header} ${classes.headerFixed}`}
+            data-testid="heading"
+        >
             <Backdrop show={showSideNav} onClick={hideSideNavHandler} />
             <Sidenav show={showSideNav} close={hideSideNavHandler} />
-            <div className={`${classes.header} ${classes.headerFixed}`}>
-                <Content className={classes.headerContent}>
+            <Content className={classes.headerContent}>
+                <Button
+                    aria-label="Menu"
+                    className={`${classes.icon} ${classes.menuIcon}`}
+                    auto
+                    type="abort"
+                    onClick={showSideNavHandler}
+                    data-testid="hamburgerButton"
+                >
+                    <MenuIcon size={16} />
+                </Button>
+                <div style={{ display: 'flex' }}>
+                    <div className={classes.headerTitle}>
+                        <Link to="/" className={classes.title}>
+                            MyMovieList
+                        </Link>
+                    </div>
+                    <Popover
+                        content={() => (
+                            <MoviePopover className={classes.link} />
+                        )}
+                        hideArrow
+                        trigger="hover"
+                        className={classes.popover}
+                    >
+                        <span className={classes.popoverText}>Movies</span>
+                    </Popover>
+                    <Popover
+                        content={() => <TVPopover className={classes.link} />}
+                        hideArrow
+                        trigger="hover"
+                        className={classes.popover}
+                    >
+                        <span className={classes.popoverText}>TV Shows</span>
+                    </Popover>
+                    <Popover
+                        content={() => (
+                            <PeoplePopover className={classes.link} />
+                        )}
+                        hideArrow
+                        trigger="hover"
+                        className={classes.popover}
+                    >
+                        <span className={classes.popoverText}>People</span>
+                    </Popover>
+                </div>
+                <div className={classes.sidebar}>
                     <Button
-                        aria-label="Menu"
-                        className={`${classes.icon} ${classes.menuIcon}`}
+                        aria-label="Search"
+                        className={classes.icon}
                         auto
                         type="abort"
-                        onClick={showSideNavHandler}
+                        onClick={showSearch}
                     >
-                        <MenuIcon size={16} />
+                        <SearchIcon size={16} />
+                        <Search isVisible={search} hide={hideSearch} />
                     </Button>
-                    <div style={{ display: 'flex' }}>
-                        <div className={classes.headerTitle}>
-                            <Link to="/" className={classes.title}>
-                                MyMovieList
-                            </Link>
-                        </div>
-                        <Popover
-                            content={() => (
-                                <MoviePopover className={classes.link} />
-                            )}
-                            hideArrow
-                            trigger="hover"
-                            className={classes.popover}
-                        >
-                            <span className={classes.popoverText}>Movies</span>
-                        </Popover>
-                        <Popover
-                            content={() => (
-                                <TVPopover className={classes.link} />
-                            )}
-                            hideArrow
-                            trigger="hover"
-                            className={classes.popover}
-                        >
-                            <span className={classes.popoverText}>
-                                TV Shows
-                            </span>
-                        </Popover>
-                        <Popover
-                            content={() => (
-                                <PeoplePopover className={classes.link} />
-                            )}
-                            hideArrow
-                            trigger="hover"
-                            className={classes.popover}
-                        >
-                            <span className={classes.popoverText}>People</span>
-                        </Popover>
-                    </div>
-                    <div className={classes.sidebar}>
-                        <Button
-                            aria-label="Search"
-                            className={classes.icon}
-                            auto
-                            type="abort"
-                            onClick={showSearch}
-                        >
-                            <SearchIcon size={16} />
-                            <Search isVisible={search} hide={hideSearch} />
-                        </Button>
-                        <Button
-                            aria-label="Toggle Theme"
-                            className={classes.icon}
-                            auto
-                            type="abort"
-                            onClick={toggleTheme}
-                        >
-                            {isDark ? <Sun size={16} /> : <Moon size={16} />}
-                        </Button>
-                    </div>
-                </Content>
-            </div>
-        </>
+                    <Button
+                        aria-label="Toggle Theme"
+                        className={classes.icon}
+                        auto
+                        type="abort"
+                        onClick={toggleTheme}
+                    >
+                        {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                    </Button>
+                </div>
+            </Content>
+        </div>
     );
 };
 
