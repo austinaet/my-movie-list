@@ -1,35 +1,14 @@
 import React from 'react';
-import { Card, Divider, Text, Spacer } from '@geist-ui/react';
-import { Link } from 'react-router-dom';
 
-import makeStyles from '../../util/makeStyles';
-
-const useStyles = makeStyles((ui) => ({
-    secondaryText: {
-        color: ui.palette.secondary,
-    },
-    paragraph: {
-        margin: '0 !important',
-    },
-    link: {
-        color: ui.palette.success,
-        transition: 'color 0.2s',
-        '&:hover': {
-            color:
-                ui.type === 'dark'
-                    ? ui.palette.successLight
-                    : ui.palette.successDark,
-        },
-    },
-}));
+import Roles from './Roles';
 
 const getReleaseYear = (date) => (date ? +date.split('-')[0] : '');
 
-const transformCast = (cast) => {
+export const transformCast = (cast) => {
     if (cast.length === 0) {
         return [];
     }
-    const newCast = cast.map((act) => {
+    const roles = cast.map((act) => {
         let newAct = {
             id: act.id,
             title: act.title || act.name,
@@ -38,7 +17,7 @@ const transformCast = (cast) => {
                     ? act.release_date
                     : act.first_air_date
             ),
-            character: act.character,
+            job: act.character,
             mediaType: act.media_type,
         };
         if (act.media_type === 'tv') {
@@ -46,7 +25,7 @@ const transformCast = (cast) => {
         }
         return newAct;
     });
-    return newCast.sort((a, b) => {
+    return roles.sort((a, b) => {
         if (!a.releaseYear) {
             return -100;
         }
@@ -58,62 +37,13 @@ const transformCast = (cast) => {
 };
 
 const Cast = ({ cast }) => {
-    const classes = useStyles();
-
     if (cast.length === 0) {
         return null;
     }
 
-    const newCast = transformCast(cast);
-    let year = newCast[0].releaseYear;
+    const roles = transformCast(cast);
 
-    return (
-        <>
-            <Text h3>Acting</Text>
-            <Card shadow>
-                {newCast.map((act) => {
-                    let isDividerRequired = false;
-                    if (year !== act.releaseYear) {
-                        isDividerRequired = true;
-                        year = act.releaseYear;
-                    }
-                    return (
-                        <div key={act.id * Math.random()}>
-                            {isDividerRequired && <Divider />}
-                            <Text className={classes.paragraph}>
-                                <span>{act.releaseYear || '--------'}</span>
-                                <Spacer x={0.8} inline />
-                                <Link
-                                    to={`/${act.mediaType}/${act.id}`}
-                                    className={classes.link}
-                                >
-                                    {act.title}
-                                </Link>
-                                {act.mediaType === 'tv' && act.episodes > 0 && (
-                                    <>
-                                        {' '}
-                                        <span className={classes.secondaryText}>
-                                            ({act.episodes} episode
-                                            {act.episodes > 1 && 's'}){' '}
-                                        </span>
-                                    </>
-                                )}
-                                {act.character && (
-                                    <>
-                                        {' '}
-                                        <span className={classes.secondaryText}>
-                                            as
-                                        </span>{' '}
-                                        <span>{act.character}</span>
-                                    </>
-                                )}
-                            </Text>
-                        </div>
-                    );
-                })}
-            </Card>
-        </>
-    );
+    return <Roles department="Acting" roles={roles}  />;
 };
 
 export default Cast;

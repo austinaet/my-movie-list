@@ -41,7 +41,7 @@ const calcAverage = (values) => {
     return undefined;
 };
 
-const Movie = (props) => {
+const Show = (props) => {
     const { type, id } = useParams();
     const classes = useStyles();
 
@@ -255,4 +255,4 @@ const Movie = (props) => {
     );
 };
 
-export default Movie;
+export default Show;

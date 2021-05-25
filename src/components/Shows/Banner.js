@@ -21,8 +21,13 @@ const useStyles = makeStyles((ui) => ({
     content: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
+    },
+    centerContent: {
+        justifyContent: 'center',
+    },
+    leftAlignContent: {
+        justifyContent: 'flex-start'
     },
     textContent: {
         display: 'none',
@@ -80,7 +85,7 @@ export const LargeBanner = ({
             className={`${classes.backdrop} ${backdropClasses.largeBackdrop}`}
             style={{ backgroundImage: backdropPath }}
         >
-            <Content className={classes.content}>
+            <Content className={`${classes.content} ${classes.leftAlignContent}`}>
                 <div>
                     <Image
                         src={posterPath}
@@ -135,7 +140,7 @@ export const MiniBanner = ({ title, backdrop, poster, link, linkText }) => {
             className={`${classes.backdrop} ${miniBackdrop}`}
             style={{ backgroundImage: backdropPath }}
         >
-            <Content className={classes.content}>
+            <Content className={`${classes.content} ${classes.centerContent}`}>
                 <div>
                     <Link to={link}>
                         <Image

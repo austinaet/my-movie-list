@@ -1,31 +1,10 @@
 import React from 'react';
-import { Spacer, Text, Card, Divider } from '@geist-ui/react';
-import { Link } from 'react-router-dom';
 
-import makeStyles from '../../util/makeStyles';
-
-const useStyles = makeStyles((ui) => ({
-    secondaryText: {
-        color: ui.palette.secondary,
-    },
-    paragraph: {
-        margin: '0 !important',
-    },
-    link: {
-        color: ui.palette.success,
-        transition: 'color 0.2s',
-        '&:hover': {
-            color:
-                ui.type === 'dark'
-                    ? ui.palette.successLight
-                    : ui.palette.successDark,
-        },
-    },
-}));
+import Roles from './Roles';
 
 const getReleaseYear = (date) => (date ? +date.split('-')[0] : '');
 
-const transformCrew = (crew) => {
+export const transformCrew = (crew) => {
     if (crew.length === 0) {
         return {};
     }
@@ -45,7 +24,7 @@ const transformCrew = (crew) => {
                 ),
                 job: role.job,
                 mediaType: role.media_type,
-                episodes: role.episode_count,
+                episodes: role.episode_count ? role.episode_count : null,
             });
         }
     });
@@ -63,61 +42,6 @@ const transformCrew = (crew) => {
     return newCrew;
 };
 
-const Department = ({ name, roles }) => {
-    const classes = useStyles();
-
-    let year = roles[0].releaseYear;
-
-    return (
-        <>
-            <Spacer y={0.8} />
-            <Text h3>{name}</Text>
-            <Card shadow>
-                {roles.map((role) => {
-                    let isDividerRequired = false;
-                    if (year !== role.releaseYear) {
-                        isDividerRequired = true;
-                        year = role.releaseYear;
-                    }
-                    return (
-                        <div key={role.id * Math.random()}>
-                            {isDividerRequired && <Divider />}
-                            <Text className={classes.paragraph}>
-                                <span>{role.releaseYear || '--------'}</span>
-                                <Spacer x={0.8} inline />
-                                <Link
-                                    to={`/${role.mediaType}/${role.id}`}
-                                    className={classes.link}
-                                >
-                                    {role.title}
-                                </Link>
-                                {role.mediaType === 'tv' && role.episodes && (
-                                    <>
-                                        {' '}
-                                        <span className={classes.secondaryText}>
-                                            ({role.episodes} episode
-                                            {role.episodes > 1 && 's'}){' '}
-                                        </span>
-                                    </>
-                                )}
-                                {role.job && (
-                                    <>
-                                        {' '}
-                                        <span className={classes.secondaryText}>
-                                            as
-                                        </span>{' '}
-                                        <span>{role.job}</span>
-                                    </>
-                                )}
-                            </Text>
-                        </div>
-                    );
-                })}
-            </Card>
-        </>
-    );
-};
-
 const Crew = ({ crew }) => {
     if (crew.length === 0) {
         return null;
@@ -128,9 +52,9 @@ const Crew = ({ crew }) => {
     return (
         <>
             {Object.keys(newCrew).map((department) => (
-                <Department
+                <Roles
                     key={department}
-                    name={department}
+                    department={department}
                     roles={newCrew[department]}
                 />
             ))}

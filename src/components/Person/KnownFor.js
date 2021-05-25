@@ -25,9 +25,6 @@ const removeDuplicates = (arr) => {
 };
 
 const getKnownFor = (credits) => {
-    if (credits.length === 0) {
-        return [];
-    }
     let fullCredits = credits.filter((credit) =>
         credit.poster_path ? true : false
     );
@@ -42,15 +39,16 @@ const getKnownFor = (credits) => {
 const KnownFor = ({ knownFor }) => {
     const classes = useStyles();
 
-    const newKnownfor = getKnownFor([...knownFor.cast, ...knownFor.crew]);
-    if (newKnownfor.length === 0) {
+    if (knownFor.cast.length === 0 && knownFor.crew.length === 0) {
         return null;
     }
 
+    const newKnownfor = getKnownFor([...knownFor.cast, ...knownFor.crew]);
+
     return (
-        <>
+        <section data-testid="knownFor">
             <Text h3>Popular Movies/TV shows</Text>
-            <Scroller>
+            <Scroller data-testid="scroller">
                 {newKnownfor.map((el) => (
                     <Link
                         key={`${el.media_type}${el.id}`}
@@ -63,12 +61,13 @@ const KnownFor = ({ knownFor }) => {
                                 src={`https://image.tmdb.org/t/p/w154${el.poster_path}`}
                                 alt={el.title || el.name}
                                 className={classes.image}
+                                data-testid="image"
                             />
                         </Tooltip>
                     </Link>
                 ))}
             </Scroller>
-        </>
+        </section>
     );
 };
 

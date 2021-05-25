@@ -12,7 +12,7 @@ const useStyles = makeStyles((ui) => ({
 
 const Scroller = (props) => {
     const classes = useStyles();
-    return <section className={classes.scroller}>{props.children}</section>;
+    return <section className={classes.scroller} {...props}>{props.children}</section>;
 };
 
 export default Scroller;
